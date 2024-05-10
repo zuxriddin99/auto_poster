@@ -74,11 +74,12 @@ class PlannedPosts(models.Model):
 
     def save(self, *args, **kwargs):
         super(PlannedPosts, self).save(*args, **kwargs)
-        PeriodicTask.objects.create(
-            name=f"Publish post_id:{self.post_id}. ({generate_name()})",
-            task="apps.main.tasks.publish_post",
-            one_off=True,
-            start_time=self.datetime_posting,
-            crontab_id=2,
-            kwargs=f'{{"planned_post_id": {self.id}}}'
-        )
+        if self.id == None:
+            PeriodicTask.objects.create(
+                name=f"Publish post_id:{self.post_id}. ({generate_name()})",
+                task="apps.main.tasks.publish_post",
+                one_off=True,
+                start_time=self.datetime_posting,
+                crontab_id=2,
+                kwargs=f'{{"planned_post_id": {self.id}}}'
+            )

@@ -149,7 +149,7 @@ CACHES = {
 }
 
 CSRF_TRUSTED_ORIGINS = ["http://*.zukhriddin.uz", "https://*.zukhriddin.uz", "https://zukhriddin.uz",
-                        "http://zukhriddin.uz",  "https://4cfc-84-54-70-172.ngrok-free.app" ]
+                        "http://zukhriddin.uz",  "https://4cfc-84-54-70-172.ngrok-free.app", "http://zukhriddin.uz:8003" ]
 
 CKEDITOR_5_CONFIGS = {
     'default': {

@@ -1,0 +1,101 @@
+version: "3"
+
+services:
+  postgres_base:
+    build:
+      context: .
+      dockerfile: ./etc/compose/postgres/Dockerfile
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-food_delivery}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-food_delivery}
+      POSTGRES_DB: ${POSTGRES_DB:-food_delivery}
+    ports:
+      - ${POSTGRES_PORT:-5432}:5432
+    volumes:
+      - ./mounts/postgres/pg_data:/var/lib/postgresql/data
+      - ./mounts/postgres/backups:/backups
+      - ./mounts/postgres/logs:/var/log/postgresql
+    #      - ./etc/compose/postgres/postgresql.conf:/etc/postgresql/postgresql.conf
+    stdin_open: true
+    tty: true
+  django_base:
+    build:
+      context: .
+      dockerfile: etc/compose/backend/Dockerfile
+    command: >
+      sh -c  "python manage.py collectstatic --noinput && python manage.py migrate && gunicorn 
+      --reload"
+    restart: unless-stopped
+    volumes:
+      - ./backend:/backend
+      - ./mounts/backend/logs:/backend/logs
+      - ./mounts/backend/static:/backend/static
+      - ./mounts/backend/media:/backend/media
+    stdin_open: true
+    tty: true
+
+  nginx_base:
+    build:
+      context: .
+      dockerfile: ./etc/compose/nginx/Dockerfile
+    restart: unless-stopped
+    volumes:
+      - ./mounts/nginx/logs:/var/log/nginx
+      - ./mounts/backend/static:/var/www/html/static:ro
+      - ./mounts/backend/media:/var/www/html/media:ro
+      - ./etc/compose/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    stdin_open: true
+    tty: true
+
+  celery_worker_base:
+    build:
+      context: .
+      dockerfile: etc/compose/backend/Dockerfile
+    image: celery_worker
+    command: celery -A config.celery worker -l info
+    env_file:
+      - .env
+    volumes:
+      - ./backend:/backend
+      - ./mounts/backend/logs:/backend/logs
+      - ./mounts/backend/static:/backend/static
+      - ./mounts/backend/media:/backend/media
+    depends_on:
+      - redis
+      - django
+
+  celery_beat_base:
+    build:
+      context: .
+      dockerfile: etc/compose/backend/Dockerfile
+    image: celery_beat
+    command: celery -A config beat -l info
+    env_file:
+      - .env
+    volumes:
+      - ./backend:/backend
+      - ./mounts/backend/logs:/backend/logs
+      - ./mounts/backend/static:/backend/static
+      - ./mounts/backend/media:/backend/media
+    depends_on:
+      - redis
+      - django
+
+  redis_base:
+    image: redis:6.2.1
+    restart: unless-stopped
+    privileged: true
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    volumes:
+      - ./mounts/redis_data:/data
+      - ./mounts/redis_conf:/conf
+    ports:
+      - ${REDIS_PORT:-6379}:6379
+    #    logging:
+    #      options:
+    #        max-size: "10m"
+    #        max-file: "3"
+    stdin_open: true
+    tty: true

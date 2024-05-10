@@ -1,0 +1,7 @@
+[flake8]
+exclude =
+    migrations,
+    __pycache__,
+    __init__.py
+max-line-length = 120
+ignore = F401, F841, F403, E501

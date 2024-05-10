@@ -1,0 +1,58 @@
+version: "3"
+
+services:
+  postgres:
+    env_file:
+      - .env
+    extends:
+      file: common.yml
+      service: postgres_base
+    ports:
+      - ${POSTGRES_PORT:-5432}:5432
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+  django:
+    env_file:
+      - .env
+    extends:
+      file: common.yml
+      service: django_base
+    depends_on:
+      - postgres
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+  redis:
+    env_file:
+      - .env
+    extends:
+      file: common.yml
+      service: redis_base
+  celery_worker:
+      env_file:
+        - .env
+      extends:
+        file: common.yml
+        service: celery_worker_base
+  celery_beat:
+      env_file:
+        - .env
+      extends:
+        file: common.yml
+        service: celery_beat_base
+
+  nginx:
+    env_file:
+      - .env
+    extends:
+      file: common.yml
+      service: nginx_base
+    ports:
+      - ${NGINX_PORT:-80}:80
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"

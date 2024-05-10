@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "auto-poster"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+dj-database-url = "^2.1.0"
+django-redis = "^5.4.0"
+django-ckeditor-5 = "^0.2.12"
+django-light = "^0.1.0.post3"
+django-jazzmin = "^3.0.0"
+django-celery-beat = "^2.6.0"
+pytelegrambotapi = "^4.17.0"
+psycopg2-binary = "^2.9.6"
+gunicorn = "^21.2.0"
+celery = "^5.4.0"
+django-celery-results = "^2.5.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

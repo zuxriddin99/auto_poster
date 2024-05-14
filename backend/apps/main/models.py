@@ -74,7 +74,8 @@ class PlannedPosts(models.Model):
     post = models.ForeignKey(Post, verbose_name="Публикация", on_delete=models.CASCADE, related_name='planned_posts')
     chennals = models.ManyToManyField(TelegramChennels, verbose_name="каналы", related_name='planned_posts')
     datetime_posting = models.DateTimeField(verbose_name="Дата и время отправки публикации")
-    count_max_posts = models.IntegerField(verbose_name="Общее количество запусков", default=1)
+    end_datetime_posting = models.DateTimeField(verbose_name="Истекает", blank=True, null=True)
+    one_time_task = models.BooleanField("Одноразовая задача", default=True)
     interval = models.CharField(
         verbose_name="Интервал", max_length=20, choices=IntervalEnum.choices, default=IntervalEnum.NONE.value)
 
@@ -87,15 +88,20 @@ class PlannedPosts(models.Model):
         is_created = not self.pk
         super(PlannedPosts, self).save(*args, **kwargs)
         if is_created:
+            data = {
+                "name": f"Publish post_id:{self.post_id}. ({generate_name()})",
+                "task": "apps.main.tasks.publish_post",
+                "start_time": self.datetime_posting,
+                "interval": self.get_interval(),
+                "crontab": self.get_crone_tab(),
+                "kwargs": f'{{"planned_post_id": {self.id}}}'
+            }
+            if self.end_datetime_posting:
+                data['expires'] = self.end_datetime_posting
+            else:
+                data["one_off"] = True
             PeriodicTask.objects.create(
-                name=f"Publish post_id:{self.post_id}. ({generate_name()})",
-                task="apps.main.tasks.publish_post",
-                one_off=self.count_max_posts == 1,
-                total_run_count=self.count_max_posts,
-                start_time=self.datetime_posting,
-                interval=self.get_interval(),
-                crontab=self.get_crone_tab(),
-                kwargs=f'{{"planned_post_id": {self.id}}}'
+                **data
             )
 
     def get_interval(self):

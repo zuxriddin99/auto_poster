@@ -17,5 +17,7 @@ class PlannedPostsInlineAdmin(admin.StackedInline):
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('id', 'post_type', 'created_at', 'status')
+    list_display = ('id', 'post_type', 'created_at')
     inlines = [PostMediaInlineAdmin, PlannedPostsInlineAdmin]
+
+

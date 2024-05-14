@@ -11,21 +11,23 @@ logger = get_task_logger(__name__)
 def publish_post(planned_post_id: int):
     errors = []
     successes = []
+    print(14)
     try:
         planned_post = PlannedPosts.objects.get(id=planned_post_id)
-
+        print(17)
     except PlannedPosts.DoesNotExist:
         return "Planned post not published because not found"
-
-    post = planned_post.post
+    post_id = planned_post.post_id
+    # try:
     for p_post in planned_post.chennals.all():
         try:
-            resp = send_posts(chat=p_post.channel_username, post=post)
+            resp = send_posts(chat=p_post.channel_username, post_id=post_id)
             successes.append(resp)
         except Exception as e:
             errors.append(e)
-    planned_post.was_posted = True
-    planned_post.save()
+    # except Exception as e:
+    #     print(e)
+    print(successes, errors)
     return {
         "successes": successes,
         "errors": errors,

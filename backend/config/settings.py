@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     "apps.main",
     "django_ckeditor_5",
     'django_celery_beat',
-"django_celery_results",
+    "django_celery_results",
 ]
 
 MIDDLEWARE = [
@@ -170,8 +170,8 @@ CELERY_TIMEZONE = "Europe/Moscow"
 
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
-BOT_TOKEN = "6996597156:AAGBtnqN6zuhYeIVeK5tKze8cbYiLHLiJV8"
-BOT_ID = 6996597156
+BOT_TOKEN = "7098180147:AAF-qJu4int7Xh_9vuwa-ZNQJcG5q3ETlcI"
+BOT_ID = 7098180147
 
 #
 # CELERY_BEAT_SCHEDULE = {

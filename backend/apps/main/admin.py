@@ -1,7 +1,6 @@
 from django.contrib import admin
 from apps.main.models import *
 
-admin.site.register(TelegramChennels)
 admin.site.register(PlannedPosts)
 
 
@@ -19,5 +18,9 @@ class PlannedPostsInlineAdmin(admin.StackedInline):
 class PostAdmin(admin.ModelAdmin):
     list_display = ('id', 'post_type', 'created_at')
     inlines = [PostMediaInlineAdmin, PlannedPostsInlineAdmin]
+
+@admin.register(TelegramChennels)
+class TelegramChennelsAdmin(admin.ModelAdmin):
+    list_display = ('channel_name', 'channel_username')
 
 

@@ -46,8 +46,8 @@ class PostMedia(models.Model):
 
 
 class TelegramChennels(models.Model):
-    channel_name = models.CharField(verbose_name="Название канала", max_length=100, null=True)
-    channel_username = models.CharField(verbose_name="Название канала(username)", max_length=100, null=True)
+    channel_name = models.CharField(verbose_name="Название канала", max_length=100, unique=True, null=True)
+    channel_username = models.CharField(verbose_name="Название канала(username)", max_length=100, unique=True, null=True)
 
     class Meta:
         db_table = 'telegram_chennels'

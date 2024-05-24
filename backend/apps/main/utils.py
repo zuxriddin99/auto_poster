@@ -65,8 +65,7 @@ def cache_chennal_name_gen(username: str):
 
 
 def update_chennal_last_send_msg(username: str):
-    now = datetime.datetime.now()
-    cache.add(key=cache_chennal_name_gen(username), time=now)
+    cache.add(key=cache_chennal_name_gen(username), time=datetime.datetime.now())
 
 
 def get_chennal_last_send_time(username: str):

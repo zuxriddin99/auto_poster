@@ -2,7 +2,7 @@ from celery import shared_task
 from celery.utils.log import get_task_logger
 
 from apps.main.models import PlannedPosts
-from apps.main.utils import send_posts, chennal_check_and_delay
+from apps.main.utils import send_posts, chennal_check_and_delay, update_chennal_last_send_msg
 import time
 logger = get_task_logger(__name__)
 
@@ -18,5 +18,6 @@ def publish_post(planned_post_id: int):
         chennal_check_and_delay(p_post.channel_username)
         # try:
         send_posts(chat=p_post.channel_username, post_id=post_id)
+        update_chennal_last_send_msg(p_post.channel_username)
         # except Exception as e:
         #     pass

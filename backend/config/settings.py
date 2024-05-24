@@ -153,8 +153,8 @@ CSRF_TRUSTED_ORIGINS = ["http://*.zukhriddin.uz", "https://*.zukhriddin.uz", "ht
 
 CKEDITOR_5_CONFIGS = {
     'default': {
-        'toolbar': ['|', 'bold', '|', 'italic', '|', 'link', '|', 'underline'],
-
+        'toolbar': ['|', 'bold', '|', 'italic', '|', 'link', '|', 'underline', '|', ],
+        'language': 'ru',
     },
 }
 

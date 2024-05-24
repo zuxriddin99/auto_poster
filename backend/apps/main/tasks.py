@@ -15,7 +15,8 @@ def publish_post(planned_post_id: int):
         return "Planned post not published because not found"
     post_id = planned_post.post_id
     for p_post in planned_post.chennals.all():
-        time.sleep(0.5)
+        print(p_post.channel_username)
+        time.sleep(1)
         # try:
         send_posts(chat=p_post.channel_username, post_id=post_id)
         # except Exception as e:

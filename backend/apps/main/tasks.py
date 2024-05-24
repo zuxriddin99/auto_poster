@@ -31,6 +31,6 @@ def publish_post(planned_post_id: int):
             unsent_chennals[p_post.channel_username] = str(e)
     unsent_chennals["end_datetetime"] = datetime.datetime.now().isoformat()
     if raise_error:
-        raise unsent_chennals
+        raise ValueError(str(unsent_chennals))
     else:
         return unsent_chennals

@@ -144,12 +144,12 @@ CACHES = {
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient"
         },
-        'TIMEOUT': 604800,  # Set the default timeout to 604800 seconds (7 day)
+        'TIMEOUT': 4233600  # Set the default timeout to 604800 seconds (14 day)
     }
 }
 
 CSRF_TRUSTED_ORIGINS = ["http://*.zukhriddin.uz", "https://*.zukhriddin.uz", "https://zukhriddin.uz",
-                        "http://zukhriddin.uz",  "https://4cfc-84-54-70-172.ngrok-free.app", "http://zukhriddin.uz:8003" ]
+                        "http://zukhriddin.uz", "https://4cfc-84-54-70-172.ngrok-free.app", "http://zukhriddin.uz:8003"]
 
 CKEDITOR_5_CONFIGS = {
     'default': {
@@ -165,7 +165,7 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_BACKEND = 'django-db'
-CELERY_TIMEZONE = "Europe/Moscow"
+CELERY_TIMEZONE = TIME_ZONE
 CELERY_RESULT_EXTENDED = True
 
 # CELERY BEAT SCHEDULER
@@ -175,13 +175,6 @@ CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 BOT_TOKEN = "7098180147:AAF-qJu4int7Xh_9vuwa-ZNQJcG5q3ETlcI"
 BOT_ID = 7098180147
 
-#
-# CELERY_BEAT_SCHEDULE = {
-#     "sample_task": {
-#         "task": "apps.main.tasks.sample_task",
-#         "schedule": crontab(minute="*/1"),
-#     },
-# }
 MAX_UPLOAD_SIZE = 52428800
 DATA_UPLOAD_MAX_MEMORY_SIZE = 52428800
 FILE_UPLOAD_MAX_MEMORY_SIZE = 52428800

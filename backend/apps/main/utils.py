@@ -1,7 +1,12 @@
+import datetime
+import time
+
+from django.core.cache import cache
 from telebot import types
 
 from apps.main.adapters import bot
 from apps.main.models import Post
+from config.settings import TIME_ZONE
 
 
 def refactor_text(text: str):
@@ -9,6 +14,7 @@ def refactor_text(text: str):
     text = text.replace("<br>", "\n")
     text = text.replace("&nbsp;", " ")
     return text
+
 
 def send_posts(chat: str, post_id):
     post = Post.objects.get(id=post_id)
@@ -52,3 +58,29 @@ def send_album_message(chat: str, post_id: int):
             medias.append(types.InputMediaVideo(media=media.file, caption=caption, parse_mode="HTML"))
 
     bot.send_media_group(chat_id=chat, media=medias)
+
+
+def cache_chennal_name_gen(username: str):
+    return f"{username}_last_send_time"
+
+
+def update_chennal_last_send_msg(username: str):
+    now = datetime.datetime.now()
+    cache.add(key=cache_chennal_name_gen(username), time=now)
+
+
+def get_chennal_last_send_time(username: str):
+    return cache.get(key=cache_chennal_name_gen(username), default=None)
+
+
+def has_send_msg_to_chennal(username: str):
+    last_msg_datetime = get_chennal_last_send_time(username)
+    if last_msg_datetime:
+        now = datetime.datetime.now()
+        if (now - last_msg_datetime).total_seconds() >= 1:
+            return True
+    return False
+
+
+def chennal_check_and_delay(username: str):
+    time.sleep(1 if has_send_msg_to_chennal(username) else 2)

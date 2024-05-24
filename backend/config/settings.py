@@ -166,6 +166,8 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_BACKEND = 'django-db'
 CELERY_TIMEZONE = "Europe/Moscow"
+CELERY_RESULT_EXTENDED = True
+
 # CELERY BEAT SCHEDULER
 
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'

@@ -89,7 +89,7 @@ class PlannedPosts(models.Model):
         super(PlannedPosts, self).save(*args, **kwargs)
         if is_created:
             data = {
-                "name": f"Publish post_id:{self.post_id}. ({generate_name()})",
+                "name": f"Publish post_id:{self.post_id}. (planned_post_id{self.id})",
                 "task": "apps.main.tasks.publish_post",
                 "start_time": self.datetime_posting,
                 "interval": self.get_interval(),

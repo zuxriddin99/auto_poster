@@ -20,9 +20,11 @@ def publish_post(planned_post_id: int):
     unsent_chennals = {
         "start_datetetime": datetime.datetime.now().isoformat()
     }
+
     raise_error = False
     for p_post in planned_post.chennals.all():
         chennal_check_and_delay(p_post.channel_username)
+        print(datetime.datetime.now())
         try:
             send_posts(chat=p_post.channel_username, post_id=post_id)
             update_chennal_last_send_msg(p_post.channel_username)

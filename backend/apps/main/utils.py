@@ -82,4 +82,4 @@ def has_send_msg_to_chennal(username: str):
 
 
 def chennal_check_and_delay(username: str):
-    time.sleep(1 if has_send_msg_to_chennal(username) else 2)
+    time.sleep(2 if has_send_msg_to_chennal(username) else 3)

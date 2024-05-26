@@ -178,3 +178,15 @@ BOT_ID = 7098180147
 MAX_UPLOAD_SIZE = 52428800
 DATA_UPLOAD_MAX_MEMORY_SIZE = 52428800
 FILE_UPLOAD_MAX_MEMORY_SIZE = 52428800
+import sentry_sdk
+
+sentry_sdk.init(
+    dsn="https://268e3d46702dcd5092d8d7172beaaae7@o4503918987837440.ingest.us.sentry.io/4507324413575168",
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for performance monitoring.
+    traces_sample_rate=1.0,
+    # Set profiles_sample_rate to 1.0 to profile 100%
+    # of sampled transactions.
+    # We recommend adjusting this value in production.
+    profiles_sample_rate=1.0,
+)

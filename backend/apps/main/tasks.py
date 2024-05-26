@@ -2,6 +2,7 @@ import datetime
 
 from celery import shared_task
 from celery.utils.log import get_task_logger
+from sentry_sdk import capture_exception
 
 from apps.main.models import PlannedPosts
 from apps.main.utils import send_posts, chennal_check_and_delay, update_chennal_last_send_msg
@@ -20,11 +21,12 @@ def publish_post(planned_post_id: int):
 
     raise_error = False
     for p_post in planned_post.chennals.all():
-        chennal_check_and_delay(p_post.channel_username)
         try:
-            send_posts(chat=p_post.channel_username, post_id=post_id)
+            chennal_check_and_delay(p_post.channel_username)
             update_chennal_last_send_msg(p_post.channel_username)
+            send_posts(chat=p_post.channel_username, post_id=post_id)
         except Exception as e:
+            capture_exception(e)
             raise_error = True
     if raise_error:
         return "Not fully complated"

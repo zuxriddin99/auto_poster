@@ -82,6 +82,20 @@ services:
       - redis
       - django
 
+
+  flower_base:
+    image: mher/flower
+    restart: unless-stopped
+    command: celery -A config flower --conf=flower.conf.py --port=5555
+    volumes:
+      - ./mounts/web/logs:/src/logs
+    ports:
+      - "5555:5555"
+    depends_on:
+      - redis
+      - django
+      - celery
+
   redis_base:
     image: redis:6.2.1
     restart: unless-stopped
@@ -93,9 +107,9 @@ services:
       - ./mounts/redis_conf:/conf
     ports:
       - ${REDIS_PORT:-6379}:6379
-    #    logging:
-    #      options:
-    #        max-size: "10m"
-    #        max-file: "3"
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
     stdin_open: true
     tty: true

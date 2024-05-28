@@ -94,7 +94,7 @@ services:
     depends_on:
       - redis
       - django
-      - celery
+      - celery_worker
 
   redis_base:
     image: redis:6.2.1

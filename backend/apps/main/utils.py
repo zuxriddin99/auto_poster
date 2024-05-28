@@ -76,7 +76,7 @@ def has_send_msg_to_chennal(username: str):
     last_msg_datetime = get_chennal_last_send_time(username)
     if last_msg_datetime:
         now = datetime.datetime.now()
-        if (now - last_msg_datetime).total_seconds() >= 1:
+        if (now - last_msg_datetime).total_seconds() >= 4:
             return True
     return False
 

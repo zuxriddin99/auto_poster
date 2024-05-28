@@ -82,13 +82,18 @@ services:
       - redis
       - django
 
-
   flower_base:
+    build:
+      context: .
+      dockerfile: etc/compose/backend/Dockerfile
     image: mher/flower
     restart: unless-stopped
+    env_file:
+      - .env
     command: celery -A config flower --conf=flower.conf.py --port=5555
     volumes:
-      - ./mounts/web/logs:/src/logs
+      - ./backend:/backend
+      - ./mounts/backend/logs:/backend/logs
     ports:
       - "5555:5555"
     depends_on:

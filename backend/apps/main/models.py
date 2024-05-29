@@ -7,7 +7,7 @@ from django_ckeditor_5.fields import CKEditor5Field
 
 from apps.main.adapters import bot
 from apps.main.logics import generate_name
-from config.settings import BOT_ID, CELERY_TIMEZONE
+from config.settings import BOT_ID, timezone
 
 
 class Post(models.Model):

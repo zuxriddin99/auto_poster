@@ -168,6 +168,14 @@ result_backend = 'django-db'
 timezone = TIME_ZONE
 result_extended = True
 
+CELERY_BROKER_URL = REDIS_LOCATION
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_RESULT_EXTENDED = True
+
 # CELERY BEAT SCHEDULER
 
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'

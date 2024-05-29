@@ -121,7 +121,7 @@ class PlannedPosts(models.Model):
 
     def get_crone_tab(self):
         if self.interval == self.IntervalEnum.NONE:
-            obj, _ = CrontabSchedule.objects.get_or_create(timezone=CELERY_TIMEZONE, minute='*', hour='*',
+            obj, _ = CrontabSchedule.objects.get_or_create(timezone=timezone, minute='*', hour='*',
                                                            day_of_month='*', month_of_year='*', day_of_week='*')
             return obj
         return None

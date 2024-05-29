@@ -160,13 +160,13 @@ CKEDITOR_5_CONFIGS = {
 
 # CELERY SETTINGS
 
-CELERY_BROKER_URL = REDIS_LOCATION
-CELERY_ACCEPT_CONTENT = ['application/json']
-CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_BACKEND = 'django-db'
-CELERY_TIMEZONE = TIME_ZONE
-CELERY_RESULT_EXTENDED = True
+CELERY_broker_url = REDIS_LOCATION
+accept_content = ['application/json']
+result_serializer = 'json'
+task_serializer = 'json'
+result_backend = 'django-db'
+timezone = TIME_ZONE
+result_extended = True
 
 # CELERY BEAT SCHEDULER
 

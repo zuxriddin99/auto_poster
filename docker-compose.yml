@@ -25,6 +25,20 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+  django_telegram_bot:
+    command: >
+      sh -c  "python manage.py bot"
+    env_file:
+      - .env
+    extends:
+      file: common.yml
+      service: django_base
+    depends_on:
+      - postgres
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
   redis:
     env_file:
       - .env

@@ -18,13 +18,21 @@ def refactor_text(text: str):
 
 def send_posts(chat: str, post_id):
     post = Post.objects.get(id=post_id)
-    functions = {
-        Post.PostTypeEnum.TEXT: send_text_message,
-        Post.PostTypeEnum.IMAGE: send_image_message,
-        Post.PostTypeEnum.VIDEO: send_video_message,
-        Post.PostTypeEnum.ALBUM: send_album_message
-    }
-    functions[post.post_type](chat, post_id)
+    if post.post_code:
+        copy_post(chat, post)
+    else:
+        functions = {
+            Post.PostTypeEnum.TEXT: send_text_message,
+            Post.PostTypeEnum.IMAGE: send_image_message,
+            Post.PostTypeEnum.VIDEO: send_video_message,
+            Post.PostTypeEnum.ALBUM: send_album_message
+        }
+        functions[post.post_type](chat, post_id)
+
+
+def copy_post(chat: str, post: Post):
+    from_chat_id, msg_id = post.post_code.split(",")
+    bot.copy_message(chat_id=chat, from_chat_id=from_chat_id, message_id=msg_id)
 
 
 def send_text_message(chat: str, post_id: int):

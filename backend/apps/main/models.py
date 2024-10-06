@@ -19,8 +19,9 @@ class Post(models.Model):
 
     post_type = models.CharField(
         verbose_name="Тип публикации", choices=PostTypeEnum.choices, max_length=20, default=PostTypeEnum.TEXT.value)
-    content = CKEditor5Field(verbose_name="Текст")
+    content = CKEditor5Field(verbose_name="Текст", blank=True, default="")
     created_at = models.DateTimeField(auto_now_add=True)
+    post_code = models.CharField("Код публикация", max_length=100, blank=True, default="")
 
     class Meta:
         db_table = 'posts'
@@ -47,7 +48,8 @@ class PostMedia(models.Model):
 
 class TelegramChennels(models.Model):
     channel_name = models.CharField(verbose_name="Название канала", max_length=100, unique=True, null=True)
-    channel_username = models.CharField(verbose_name="Название канала(username)", max_length=100, unique=True, null=True)
+    channel_username = models.CharField(verbose_name="Название канала(username)", max_length=100, unique=True,
+                                        null=True)
 
     class Meta:
         db_table = 'telegram_chennels'

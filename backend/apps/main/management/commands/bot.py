@@ -20,8 +20,10 @@ class Command(BaseCommand):
 
 
 @bot.message_handler(content_types=['audio', 'photo', 'voice', 'video', 'document',
-    'text', 'location', 'contact', 'sticker'])
+                                    'text', 'location', 'contact', 'sticker'])
 def start_message(message):
+    if message.chat.type != "private":
+        return
     chat_id = message.chat.id
     message_id = message.id
     text = f"Поместите следующий код в поле «Код публикации» при создании публикации.\n```{chat_id},{message_id}```"

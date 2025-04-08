@@ -57,12 +57,6 @@ services:
       extends:
         file: common.yml
         service: celery_beat_base
-  flower:
-        env_file:
-          - .env
-        extends:
-          file: common.yml
-          service: flower_base
 
   nginx:
     env_file:

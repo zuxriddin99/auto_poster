@@ -111,7 +111,7 @@ services:
     volumes:
       - ./mounts/redis_data:/data
       - ./mounts/redis_conf:/conf
-    ports:
+    expose:
       - ${REDIS_PORT:-6379}:6379
     logging:
       options:

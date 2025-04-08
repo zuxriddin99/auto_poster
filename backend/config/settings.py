@@ -180,7 +180,7 @@ CELERY_RESULT_EXTENDED = True
 
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
-BOT_TOKEN = ""
+BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "6573821562:AAGHIWKfmzl33ErebRgm_quHfgN8ZbW4U0I")
 BOT_ID = 7098180147
 
 MAX_UPLOAD_SIZE = 52428800

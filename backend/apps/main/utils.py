@@ -32,28 +32,43 @@ def send_posts(chat: str, post_id):
 
 def copy_post(chat: str, post: Post):
     from_chat_id, msg_id = post.post_code.split(",")
-    bot.copy_message(chat_id=chat, from_chat_id=from_chat_id, message_id=msg_id)
-
-
+    try:
+        bot.copy_message(chat_id=chat, from_chat_id=from_chat_id, message_id=msg_id)
+    except Exception as e:
+        if "retry after " in str(e):
+            q = int(str(e).split('retry after ')[-1])
+            time.sleep(q)
 def send_text_message(chat: str, post_id: int):
     post = Post.objects.get(id=post_id)
     text = refactor_text(text=post.content)
-    bot.send_message(chat_id=chat, text=text, parse_mode="HTML")
-
+    try:
+        bot.send_message(chat_id=chat, text=text, parse_mode="HTML")
+    except Exception as e:
+        if "retry after " in str(e):
+            q = int(str(e).split('retry after ')[-1])
+            time.sleep(q)
 
 def send_image_message(chat: str, post_id: int):
     post = Post.objects.get(id=post_id)
     text = refactor_text(text=post.content)
     image = post.medias.first()
-    bot.send_photo(chat_id=chat, photo=image.file, caption=text, parse_mode="HTML")
-
+    try:
+        bot.send_photo(chat_id=chat, photo=image.file, caption=text, parse_mode="HTML")
+    except Exception as e:
+        if "retry after " in str(e):
+            q = int(str(e).split('retry after ')[-1])
+            time.sleep(q)
 
 def send_video_message(chat: str, post_id: int):
     post = Post.objects.get(id=post_id)
     text = refactor_text(text=post.content)
     video = post.medias.first()
-    bot.send_video(chat_id=chat, video=video.file, caption=text, parse_mode="HTML")
-
+    try:
+        bot.send_video(chat_id=chat, video=video.file, caption=text, parse_mode="HTML")
+    except Exception as e:
+        if "retry after " in str(e):
+            q = int(str(e).split('retry after ')[-1])
+            time.sleep(q)
 
 def send_album_message(chat: str, post_id: int):
     post = Post.objects.get(id=post_id)
@@ -64,9 +79,12 @@ def send_album_message(chat: str, post_id: int):
             medias.append(types.InputMediaPhoto(media=media.file, caption=caption, parse_mode="HTML"))
         elif media.media_type == "video":
             medias.append(types.InputMediaVideo(media=media.file, caption=caption, parse_mode="HTML"))
-
-    bot.send_media_group(chat_id=chat, media=medias)
-
+    try:
+        bot.send_media_group(chat_id=chat, media=medias)
+    except Exception as e:
+        if "retry after " in str(e):
+            q = int(str(e).split('retry after ')[-1])
+            time.sleep(q)
 
 def cache_chennal_name_gen(username: str):
     return f"{username}_last_send_time"

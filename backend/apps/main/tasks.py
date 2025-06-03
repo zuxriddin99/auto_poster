@@ -22,8 +22,9 @@ def publish_post(self, planned_post_id: int):
     raise_error = False
     for p_post in planned_post.chennals.all():
         try:
-            chennal_check_and_delay(p_post.channel_username)
-            update_chennal_last_send_msg(p_post.channel_username)
+            # chennal_check_and_delay(p_post.channel_username)
+            # update_chennal_last_send_msg(p_post.channel_username)
+            time.sleep(5)
             send_posts(chat=p_post.channel_username, post_id=post_id)
         except Exception as e:
             capture_exception(e)

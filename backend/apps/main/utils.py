@@ -2,6 +2,7 @@ import datetime
 import time
 
 from django.core.cache import cache
+from sentry_sdk import capture_exception
 from telebot import types
 
 from apps.main.adapters import bot
@@ -32,21 +33,30 @@ def send_posts(chat: str, post_id):
 
 def copy_post(chat: str, post: Post):
     from_chat_id, msg_id = post.post_code.split(",")
-    try:
-        bot.copy_message(chat_id=chat, from_chat_id=from_chat_id, message_id=msg_id)
-    except Exception as e:
-        if "retry after " in str(e):
-            q = int(str(e).split('retry after ')[-1])
-            time.sleep(q)
+    count_loop = 0
+    while True:
+        count_loop += 1
+        if count_loop >= 3:
+            break
+        try:
+            bot.copy_message(chat_id=chat, from_chat_id=from_chat_id, message_id=msg_id)
+        except Exception as e:
+            capture_exception(e)
+            time.sleep(5)
+
 def send_text_message(chat: str, post_id: int):
     post = Post.objects.get(id=post_id)
     text = refactor_text(text=post.content)
-    try:
-        bot.send_message(chat_id=chat, text=text, parse_mode="HTML")
-    except Exception as e:
-        if "retry after " in str(e):
-            q = int(str(e).split('retry after ')[-1])
-            time.sleep(q)
+    count_loop = 0
+    while True:
+        count_loop += 1
+        if count_loop >= 3:
+            break
+        try:
+            bot.send_message(chat_id=chat, text=text, parse_mode="HTML")
+        except Exception as e:
+            capture_exception(e)
+            time.sleep(5)
 
 def send_image_message(chat: str, post_id: int):
     post = Post.objects.get(id=post_id)
